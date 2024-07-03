@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="Assets\Icon\logo-CW.png" type="image/icon type">
+    <title>Document</title>
+    <link rel="stylesheet" href="B5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="B5/Icon/font/bootstrap-icons.css">
+    <style>
+        .custom-navbar {
+            border-top: 4px solid #B67685;
+            /* Ganti warna dan properti border-top sesuai kebutuhan */
+            border-bottom: 4px solid #B67685;
+            /* Ganti warna dan properti border-bottom sesuai kebutuhan */
+            padding: 0;
+        }
+
+        .nav-link {
+            color: black;
+        }
+
+        .nav-link:hover {
+            background-color: #B67685;
+            /* Warna latar belakang saat di-hover */
+            color: white;
+            /* Warna teks saat di-hover */
+        }
+
+        .nav-link.active {
+            background-color: #B67685;
+            /* Warna latar belakang untuk item aktif */
+            color: white;
+            /* Warna teks untuk item aktif */
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-container input[type="search"] {
+            padding-right: 2.5rem;
+            width: 15%;
+            /* Adjust based on the icon size */
+        }
+
+        .search-container .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            /* Adjust as needed */
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .product-card {
+            border: none;
+            width: 400px;
+            height: 400px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.1);
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .product-price {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .search-icons {
+            position: absolute;
+            bottom: 20px;
+            right: 10px;
+            background-color: #F5EEE6;
+            border: none;
+            padding: 20px;
+            color: black;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline-secondary {
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-outline-secondary.disabled {
+            pointer-events: none;
+            opacity: 0.65;
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .product-price {
+            color: #dc3545;
+            font-size: 1.25rem;
+        }
+
+        .modal-backdrop.show {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .btn.rounded-circle {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid px-0">
+        @include('frames.header')
+        <div class="d-flex flex-column" style="background-color: #F5EEE6">
+            <div class="search-container d-flex flex-row-reverse">
+                <input class="form-control" type="search" placeholder="What can i help you to find ?"
+                    aria-label="Search">
+                <i class="bi bi-search search-icon"></i>
+            </div>
+            <div class="container-fluid" style="background-color: #F5EEE6">
+                <div class="d-flex align-items-stretch justify-content-center">
+                    <div class="main-content">
+                        @yield('content')
+                    </div>
+                </div>
+            </div>
+        </div>
+        @include('frames.product-modal')
+    </div>
+    {{-- @include('frames.footer') --}}
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="B5/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentLocation = window.location.href;
+            const menuItems = document.querySelectorAll('.nav-link');
+
+            menuItems.forEach(item => {
+                if (item.href === currentLocation) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+    <script>
+        document.getElementById('button-minus').addEventListener('click', function() {
+            var quantityInput = document.querySelector('input[type="number"]');
+            var currentValue = parseInt(quantityInput.value);
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+            }
+        });
+
+        document.getElementById('button-plus').addEventListener('click', function() {
+            var quantityInput = document.querySelector('input[type="number"]');
+            var currentValue = parseInt(quantityInput.value);
+            quantityInput.value = currentValue + 1;
+        });
+    </script>
+</body>
+
+</html>
