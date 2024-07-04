@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="Assets\Icon\logo-CW.png" type="image/icon type">
     <title>Document</title>
-    <link rel="stylesheet" href="B5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="B5/Icon/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ asset('B5/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('B5/Icon/font/bootstrap-icons.css') }}">
     <style>
         .custom-navbar {
             border-top: 4px solid #B67685;
@@ -134,6 +134,24 @@
             padding: 0;
             border-radius: 50%;
         }
+
+        .cards {
+            margin-bottom: 20px;
+        }
+
+        .recommended-products img {
+            width: 100%;
+            height: auto;
+        }
+
+        #quantity {
+            pointer-events: none;
+        }
+
+        .selected {
+            border: 2px solid #000;
+            background-color: #ddd;
+        }
     </style>
 </head>
 
@@ -141,7 +159,7 @@
     <div class="container-fluid px-0">
         @include('frames.header')
         <div class="d-flex flex-column" style="background-color: #F5EEE6">
-            <div class="search-container d-flex flex-row-reverse">
+            <div class="search-container d-flex flex-row-reverse mt-3">
                 <input class="form-control" type="search" placeholder="What can i help you to find ?"
                     aria-label="Search">
                 <i class="bi bi-search search-icon"></i>
@@ -156,9 +174,10 @@
         </div>
         @include('frames.product-modal')
     </div>
-    {{-- @include('frames.footer') --}}
+    @include('frames.footer')
     <!-- Bootstrap Bundle with Popper -->
-    <script src="B5/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('B5/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const currentLocation = window.location.href;
@@ -171,21 +190,7 @@
             });
         });
     </script>
-    <script>
-        document.getElementById('button-minus').addEventListener('click', function() {
-            var quantityInput = document.querySelector('input[type="number"]');
-            var currentValue = parseInt(quantityInput.value);
-            if (currentValue > 1) {
-                quantityInput.value = currentValue - 1;
-            }
-        });
 
-        document.getElementById('button-plus').addEventListener('click', function() {
-            var quantityInput = document.querySelector('input[type="number"]');
-            var currentValue = parseInt(quantityInput.value);
-            quantityInput.value = currentValue + 1;
-        });
-    </script>
 </body>
 
 </html>

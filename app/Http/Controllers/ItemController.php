@@ -14,10 +14,6 @@ class ItemController extends Controller
     {
         return view('components.best');
     }
-    public function shirt()
-    {
-        return view('components.shirt');
-    }
     public function outwear()
     {
         return view('components.outwear');
@@ -29,9 +25,5 @@ class ItemController extends Controller
     public function pants()
     {
         return view('components.pants');
-    }
-    public function detail()
-    {
-        return view('components.detail');
     }
 }

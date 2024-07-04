@@ -1,4 +1,4 @@
-{{-- <div class="modal fade" id="productModal{{ $product->id }}" tabindex="-1" aria-labelledby="productModalLabel"
+<div class="modal fade" id="productModal{{ $product->id }}" tabindex="-1" aria-labelledby="productModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
@@ -19,19 +19,22 @@
                         <div class="mb-3">
                             <label class="form-label">Size</label>
                             <div>
-                                @foreach ($product->size as $size)
-                                    <button
-                                        class="btn btn-outline-secondary btn-sm rounded-circle">{{ $size->name }}</button>
-                                @endforeach
+                                <button class="btn btn-outline-secondary btn-sm rounded-circle">S</button>
+                                <button class="btn btn-outline-secondary btn-sm rounded-circle">M</button>
+                                <button class="btn btn-outline-secondary btn-sm rounded-circle">L</button>
+                                <button class="btn btn-outline-secondary btn-sm rounded-circle">XL</button>
+                                <button class="btn btn-outline-secondary btn-sm rounded-circle disabled">XXL</button>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Color</label>
                             <div>
-                                @foreach ($product->color as $color)
-                                    <button class="btn btn-outline-secondary btn-sm rounded-circle"
-                                        style="background-color: {{ $color->code }}"></button>
-                                @endforeach
+                                <button class="btn btn-outline-secondary btn-sm rounded-circle"
+                                    style="background-color: red"></button>
+                                <button class="btn btn-outline-secondary btn-sm rounded-circle"
+                                    style="background-color: red"></button>
+                                <button class="btn btn-outline-secondary btn-sm rounded-circle"
+                                    style="background-color: red"></button>
                             </div>
                         </div>
                         <button class="btn btn-primary">Add to Cart</button>
@@ -44,4 +47,4 @@
             </div>
         </div>
     </div>
-</div> --}}
+</div>

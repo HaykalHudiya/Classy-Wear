@@ -2,14 +2,15 @@
     <div class="d-flex flex-column text-center" style="background-color: #F3D7CA">
         <div class="d-flex flex-row p-2 justify-content-between">
             <a href="/">
-                <img class="d-block mx-auto" src="Assets\Icon\logo-CW.png" alt="" width="200" height="200">
+                <img class="d-block mx-auto" src="{{ asset('Assets\Icon\logo-CW.png') }}" alt="" width="200"
+                    height="200">
             </a>
             <div class="p-2">
                 <h2>Wear Confidence <br> Wear Us</h2>
             </div>
             <div class="p-2">
                 <a href="#">
-                    <img src="Assets\Icon\cart.png" alt="">
+                    <img src="{{ asset('Assets\Icon\cart.png') }}" alt="">
                 </a>
             </div>
         </div>
@@ -28,7 +29,7 @@
                         <a class="nav-link p-4" href="http://127.0.0.1:8000/shirt">Shirt</a>
                     </li>
                     <li class="nav-item flex-fill text-center">
-                        <a class="nav-link p-4" href="http://127.0.0.1:8000/outwear" ">Outerwear</a>
+                        <a class="nav-link p-4" href="http://127.0.0.1:8000/outwear">Outerwear</a>
                     </li>
                     <li class="nav-item flex-fill text-center">
                         <a class="nav-link p-4" href="http://127.0.0.1:8000/t-shirt">T-Shirt</a>
