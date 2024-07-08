@@ -16,20 +16,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>{{ $product->name }}</td>
-                    <td><img src="{{ asset('Assets/Shirt/' . $product->image) }}" alt="{{ $product->name }}" width="50">
-                    </td>
-                    <td>Rp {{ number_format($product->price, 0, ',', '.') }},00</td>
-                    <td>{{ request()->query('size') }}</td>
-                    <td>
-                        <span
-                            style="background-color: {{ request()->query('color') }}; width: 20px; height: 20px; display: inline-block;"></span>
-                    </td>
-                    <td>1</td>
-                    <td>Rp {{ number_format($product->price, 0, ',', '.') }},00</td>
-                    <td><button class="btn btn-danger">Remove</button></td>
-                </tr>
+                @if ($product)
+                    <tr>
+                        <td>{{ $product->name }}</td>
+                        <td><img src="{{ asset('Assets/Shirt/' . $product->image) }}" alt="{{ $product->name }}"
+                                width="50"></td>
+                        <td>Rp {{ number_format($product->price, 0, ',', '.') }},00</td>
+                        <td>{{ request()->query('size') }}</td>
+                        <td>
+                            <span
+                                style="background-color: {{ request()->query('color') }}; width: 20px; height: 20px; display: inline-block;"></span>
+                        </td>
+                        <td>1</td>
+                        <td>Rp {{ number_format($product->price, 0, ',', '.') }},00</td>
+                        <td><button class="btn btn-danger">Remove</button></td>
+                    </tr>
+                @else
+                    <tr>
+                        <td colspan="8" class="text-center">No products in the cart.</td>
+                    </tr>
+                @endif
             </tbody>
         </table>
 
@@ -120,4 +126,5 @@
                     `Rp ${totalPrice.toLocaleString('id-ID', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
             }
         </script>
-    @endsection
+    </div>
+@endsection

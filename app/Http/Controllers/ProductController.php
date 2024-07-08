@@ -106,22 +106,26 @@ class ProductController extends Controller
 
     public function cart(Request $request)
     {
-        try {
-            $code = $request->query('code');
-            $size = $request->query('size');
-            $color = $request->query('color');
+        if ($request->isMethod('post')) {
+            return view('components.cart');
+        } else {
+            try {
+                $code = $request->query('code');
+                $size = $request->query('size');
+                $color = $request->query('color');
 
+                $product = Product::where('code', 'like', substr($code, 0, 6) . '%')
+                    ->where('size', $size)
+                    ->where('color', '#' . $color)
+                    ->firstOrFail();
 
-            $product = Product::where('code', 'like', substr($code, 0, 6) . '%')
-                ->where('size', $size)
-                ->where('color', '#' . $color)
-                ->firstOrFail();
-
-            return view('components.cart', compact('product'));
-        } catch (ModelNotFoundException $e) {
-            abort(404, 'Produk tidak ditemukan');
+                return view('components.cart', compact('product'));
+            } catch (ModelNotFoundException $e) {
+                return view('components.cart', ['product' => null]);
+            }
         }
     }
+
 
     public function checkProductAvailability(Request $request)
     {

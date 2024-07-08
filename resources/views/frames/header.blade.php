@@ -9,7 +9,7 @@
                 <h2>Wear Confidence <br> Wear Us</h2>
             </div>
             <div class="p-2">
-                <a href="#">
+                <a href="/cart">
                     <img src="{{ asset('Assets\Icon\cart.png') }}" alt="">
                 </a>
             </div>
