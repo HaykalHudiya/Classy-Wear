@@ -8,11 +8,29 @@
             <div class="p-2">
                 <h2>Wear Confidence <br> Wear Us</h2>
             </div>
-            <div class="p-2">
-                <a href="/cart">
+            <div class="p-2 cart-icon">
+                <a href="/carts">
                     <img src="{{ asset('Assets\Icon\cart.png') }}" alt="">
+                    @if (session('cart') && count(session('cart')) > 0)
+                        <span class="badge">{{ count(session('cart')) }}</span>
+                    @endif
                 </a>
             </div>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                function updateCartCount() {
+                    $.ajax({
+                        url: '/cart/count',
+                        method: 'GET',
+                        success: function(data) {
+                            $('.cart-icon .badge').text(data.count);
+                        }
+                    });
+                }
+
+                // Call this function when you update the cart
+                updateCartCount();
+            </script>
         </div>
         <nav class="navbar custom-navbar" style="background-color: #FFF8E3">
             <div class="container-fluid d-flex justify-content-center">

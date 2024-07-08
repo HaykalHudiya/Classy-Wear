@@ -152,6 +152,20 @@
             border: 2px solid #000;
             background-color: #ddd;
         }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-icon .badge {
+            position: absolute;
+            top: 50px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 8px;
+        }
     </style>
 </head>
 
@@ -159,11 +173,7 @@
     <div class="container-fluid px-0">
         @include('frames.header')
         <div class="d-flex flex-column" style="background-color: #F5EEE6">
-            <div class="search-container d-flex flex-row-reverse mt-3">
-                <input class="form-control" type="search" placeholder="What can i help you to find ?"
-                    aria-label="Search">
-                <i class="bi bi-search search-icon"></i>
-            </div>
+            @yield('search')
             <div class="container-fluid" style="background-color: #F5EEE6">
                 <div class="d-flex align-items-stretch justify-content-center">
                     <div class="main-content">

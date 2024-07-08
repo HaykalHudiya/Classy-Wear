@@ -1,4 +1,10 @@
 @extends('layouts.app')
+@section('search')
+    <div class="search-container d-flex flex-row-reverse mt-3">
+        <input class="form-control" type="search" placeholder="What can i help you to find ?" aria-label="Search">
+        <i class="bi bi-search search-icon"></i>
+    </div>
+@endsection
 @section('content')
     <div class="container my-4">
         <div class="row">
@@ -9,7 +15,7 @@
                             <img src="{{ asset('Assets/Shirt/' . $product['image']) }}" class="card-img-top product-img"
                                 alt="{{ $product['name'] }}">
                             <a href="#" data-bs-toggle="modal" data-bs-target="#productModal{{ $product['code'] }}">
-                                <p class="search-icons fw-bold">Buy</p>
+                                <i class="bi bi-cart-check search-icons"></i>
                             </a>
                         </div>
                     </a>
@@ -50,7 +56,7 @@
                                                 @endforeach
                                             </div>
                                         </div>
-                                        <div class="mb-3">
+                                        <div class="mb-5">
                                             <label class="form-label">Color</label>
                                             <div id="color-buttons-{{ $product['code'] }}">
                                                 @foreach ($product['colors'] as $color)
@@ -62,13 +68,11 @@
                                                 @endforeach
                                             </div>
                                         </div>
-                                        <button class="btn btn-primary buy-it-now-btn"
-                                            data-product-code="{{ $product['code'] }}">Add to Cart</button>
-                                        <button class="btn btn-dark buy-it-now-btn"
-                                            data-product-code="{{ $product['code'] }}">Buy it Now</button>
-                                        <div class="mt-3">
+                                        <div class="d-flex align-items-center justify-content-between">
                                             <a href="{{ route('frame.detail', ['code' => $product['code']]) }}">View
                                                 details</a>
+                                            <button class="btn btn-dark buy-it-now-btn"
+                                                data-product-code="{{ $product['code'] }}">Buy now</button>
                                         </div>
                                     </div>
                                 </div>
@@ -136,20 +140,19 @@
                         .getAttribute('data-selected-color');
 
                     if (selectedSize && selectedColor) {
-                        // Mengirimkan permintaan AJAX untuk memeriksa ketersediaan produk
-                        axios.get(
-                                `/check-product?code=${productCode}&size=${selectedSize}&color=${selectedColor}`
-                            )
+                        axios.get('/shirt/shirt', {
+                                params: {
+                                    code: productCode,
+                                    size: selectedSize,
+                                    color: selectedColor.replace('#', '')
+                                }
+                            })
                             .then(function(response) {
-                                // Jika produk tersedia, redirect ke halaman cart
-                                let color = selectedColor;
-                                let cleanedColor = color.replace('#', '');
                                 window.location.href =
-                                    `/cart?code=${productCode}&size=${selectedSize}&color=${cleanedColor}`;
+                                    `/carts?code=${productCode}&size=${selectedSize}&color=${selectedColor.replace('#', '')}`;
                             })
                             .catch(function(error) {
-                                // Jika produk tidak tersedia
-                                alert("Produk tidak tersedia.");
+                                alert("Terjadi kesalahan. Silakan coba lagi.");
                             });
                     } else {
                         alert("Silakan pilih ukuran dan warna.");

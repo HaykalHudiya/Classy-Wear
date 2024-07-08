@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\product;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
     public function index()
     {
+        $cart = session()->get('cart', []);
+        $cartCount = count($cart);
         $products = Product::where('type', 'shirt')->get();
 
         // Kelompokkan produk berdasarkan 6 karakter pertama dari 'code'
@@ -50,7 +53,11 @@ class ProductController extends Controller
             ];
         });
 
-        return view('components.shirt', ['products' => $finalProducts, 'sizeOrder' => $sizeOrder]);
+        return view('components.shirt', [
+            'products' => $finalProducts,
+            'sizeOrder' => $sizeOrder,
+            'cart' => $cartCount
+        ]);
         // $products = Product::all();
         // return view('components.shirt', compact('products'));
     }
@@ -119,13 +126,32 @@ class ProductController extends Controller
                     ->where('color', '#' . $color)
                     ->firstOrFail();
 
-                return view('components.cart', compact('product'));
+                $productCode = $product->code;
+
+                // Simpan data produk ke dalam sesi
+                $cart = $request->session()->get('cart', []);
+                $cart[] = [
+                    'code' => $code,
+                    'size' => $size,
+                    'color' => $color,
+                    'product' => $product,
+                ];
+                $request->session()->put('cart', $cart);
+
+                // dd($cart);
+                // dd($product->code);
+                return view('components.cart', compact('cart'));
             } catch (ModelNotFoundException $e) {
                 return view('components.cart', ['product' => null]);
             }
         }
     }
 
+    public function carts(Request $request)
+    {
+        $cart = $request->session()->get('cart', []);
+        return view('components.cart', ['cart' => $cart]);
+    }
 
     public function checkProductAvailability(Request $request)
     {
@@ -151,6 +177,66 @@ class ProductController extends Controller
             return back()->with('error', 'Produk tidak tersedia.');
         }
     }
+
+    public function addToCart(Request $request)
+    {
+        try {
+            $code = $request->input('code');
+            $size = $request->input('size');
+            $color = $request->input('color');
+            $quantity = $request->input('quantity', 1);
+
+            $product = Product::where('code', 'like', substr($code, 0, 6) . '%')
+                ->where('size', $size)
+                ->where('color', '#' . $color)
+                ->firstOrFail();
+
+            // Simpan data produk ke dalam sesi
+            $cart = $request->session()->get('cart', []);
+            $cart[] = [
+                'code' => $code,
+                'size' => $size,
+                'color' => $color,
+                'quantity' => $quantity,
+                'product' => $product,
+            ];
+            $request->session()->put('cart', $cart);
+            return response()->json(['success' => true, 'message' => 'Product added to cart successfully', 'cart' => $cart]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['success' => false, 'message' => 'Product not found']);
+        }
+    }
+
+    public function removeFromCart(Request $request)
+    {
+        try {
+            $code = $request->input('code');
+            $code = substr($code, 0, -6);
+            $size = $request->input('size');
+            $color = $request->input('color');
+
+            Log::info("Removing item from cart: Code={$code}, Size={$size}, Color={$color}");
+
+            // Ambil data cart dari sesi
+            $cart = $request->session()->get('cart', []);
+
+            // Filter data cart untuk menghapus item yang sesuai
+            $updatedCart = array_filter($cart, function ($item) use ($code, $size, $color) {
+                return !($item['code'] === $code && $item['size'] === $size && $item['color'] === $color);
+            });
+
+            Log::info('Updated cart:', $updatedCart);
+
+            // Simpan cart yang sudah diperbarui ke sesi
+            $request->session()->put('cart', array_values($updatedCart));
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            Log::error('Error removing item from cart: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Error removing item from cart']);
+        }
+    }
+
 
 
     // public function cart($code)

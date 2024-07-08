@@ -27,6 +27,7 @@ Route::get('/t-shirt', [ItemController::class, 'tshirt'])->name('frame.tshirt');
 Route::get('/pants', [ItemController::class, 'pants'])->name('frame.pants');
 
 Route::get('/shirt', [ProductController::class, 'index'])->name('frame.shirt');
+Route::get('/shirt/shirt', [ProductController::class, 'cart'])->name('cart');
 Route::get('/shirt/{code}', [ProductController::class, 'detail'])->name('frame.detail');
 
 // Route::get('/api/colors', function (Request $request) {
@@ -40,5 +41,9 @@ Route::get('/shirt/{code}', [ProductController::class, 'detail'])->name('frame.d
 //     return response()->json($colors);
 // });
 
-Route::get('/cart', [ProductController::class, 'cart'])->name('frame.cart');
+// Route::match(['get', 'post'], '/cart', [ProductController::class, 'cart'])->name('cart');
+
+Route::get('/carts', [ProductController::class, 'carts'])->name('carts');
+Route::post('/cart/add', [ProductController::class, 'addToCart']);
+Route::post('/carts/remove', [ProductController::class, 'removeFromCart']);
 Route::get('/check-product', [ProductController::class, 'checkProductAvailability'])->name('check-product');

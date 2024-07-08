@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
     <div class="container my-4">
         <h1>Cart Summary</h1>
@@ -16,21 +17,27 @@
                 </tr>
             </thead>
             <tbody>
-                @if ($product)
-                    <tr>
-                        <td>{{ $product->name }}</td>
-                        <td><img src="{{ asset('Assets/Shirt/' . $product->image) }}" alt="{{ $product->name }}"
-                                width="50"></td>
-                        <td>Rp {{ number_format($product->price, 0, ',', '.') }},00</td>
-                        <td>{{ request()->query('size') }}</td>
-                        <td>
-                            <span
-                                style="background-color: {{ request()->query('color') }}; width: 20px; height: 20px; display: inline-block;"></span>
-                        </td>
-                        <td>1</td>
-                        <td>Rp {{ number_format($product->price, 0, ',', '.') }},00</td>
-                        <td><button class="btn btn-danger">Remove</button></td>
-                    </tr>
+                @if ($cart)
+                    @foreach ($cart as $index => $item)
+                        <tr>
+                            <td>{{ $item['product']->name }}</td>
+                            <td><img src="{{ asset('Assets/Shirt/' . $item['product']->image) }}"
+                                    alt="{{ $item['product']->name }}" width="50"></td>
+                            <td id="productPrice-{{ $index }}">Rp
+                                {{ number_format($item['product']->price, 0, ',', '.') }},00</td>
+                            <td>{{ $item['size'] }}</td>
+                            <td>
+                                <span
+                                    style="background-color: #{{ $item['color'] }}; width: 20px; height: 20px; display: inline-block; border-radius: 50%;"></span>
+                            </td>
+                            <td id="productQuantity-{{ $index }}">{{ $item['quantity'] }}</td>
+                            <td id="totalPrice-{{ $index }}">Rp
+                                {{ number_format($item['product']->price * $item['quantity'], 0, ',', '.') }},00</td>
+                            <td><button class="btn btn-danger"
+                                    onclick="removeFromCart('{{ $item['product']->code }}', '{{ $item['size'] }}', '{{ $item['color'] }}')">Remove</button>
+                            </td>
+                        </tr>
+                    @endforeach
                 @else
                     <tr>
                         <td colspan="8" class="text-center">No products in the cart.</td>
@@ -113,17 +120,37 @@
             </div>
         </div>
         <script>
-            function calculateTotal() {
-                const priceElement = document.getElementById('productPrice');
-                const quantityElement = document.getElementById('productQuantity');
-                const totalPriceElement = document.getElementById('totalPrice');
+            function calculateTotal(index) {
+                const priceElement = document.getElementById(`productPrice-${index}`);
+                const quantityElement = document.getElementById(`productQuantity-${index}`);
+                const totalPriceElement = document.getElementById(`totalPrice-${index}`);
 
-                const price = parseFloat(priceElement.textContent.replace('Rp ', '').replace('.', '').replace(',', '.'));
-                const quantity = parseInt(quantityElement.textContent);
+                const price = parseFloat(priceElement.textContent.replace('Rp ', '').replace(/\./g, '').replace(',', '.'));
+                const quantity = parseInt(quantityElement.value);
 
                 const totalPrice = price * quantity;
                 totalPriceElement.textContent =
-                    `Rp ${totalPrice.toLocaleString('id-ID', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    `Rp ${totalPrice.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }
+        </script>
+        <script>
+            function removeFromCart(code, size, color) {
+                axios.post('/carts/remove', {
+                        code: code,
+                        size: size,
+                        color: color
+                    })
+                    .then(function(response) {
+                        if (response.data.success) {
+                            window.location.reload();
+                        } else {
+                            alert("Failed to remove item from cart: " + response.data.message);
+                        }
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        alert("An error occurred. Please try again.");
+                    });
             }
         </script>
     </div>

@@ -1,4 +1,10 @@
 @extends('layouts.app')
+@section('search')
+    <div class="search-container d-flex flex-row-reverse mt-3">
+        <input class="form-control" type="search" placeholder="What can i help you to find ?" aria-label="Search">
+        <i class="bi bi-search search-icon"></i>
+    </div>
+@endsection
 @section('content')
     <div class="container my-4">
         <div class="row">
