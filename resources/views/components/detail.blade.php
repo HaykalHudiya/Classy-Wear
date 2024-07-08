@@ -38,7 +38,7 @@
                 <h1 class="product-title">{{ $finalProduct['name'] }}</h1>
                 <p class="product-price">Rp {{ number_format($finalProduct['price'], 0, ',', '.') }},00</p>
                 <div class="mb-3">
-                    <label class="form-label">Size</label>
+                    <label class="form-label fw-bold">Size</label>
                     <div>
                         @foreach ($sizeOrder as $size)
                             @if (in_array($size, $finalProduct['sizes']))
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Color</label>
+                    <label class="form-label fw-bold">Color</label>
                     <div id="color-buttons-{{ $finalProduct['code'] }}">
                         @foreach ($finalProduct['colors'] as $color)
                             <button class="btn btn-outline-secondary btn-sm rounded-circle color-btn"
@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Quantity</label>
+                    <label class="form-label fw-bold">Quantity</label>
                     <div class="input-group d-flex justify-content-center">
                         <button class="btn btn-outline-secondary m-0" type="button" id="button-minus">-</button>
                         <input type="number" class="form-control text-center p-0 quantity-input" value="1"
@@ -75,8 +75,8 @@
                 <div class="d-flex align-items-center justify-content-end">
                     <button class="btn btn-primary mb-2 me-2 add-to-cart-btn"
                         data-product-code="{{ $finalProduct['code'] }}">Add to Cart</button>
-                    <button class="btn btn-dark mb-2 buy-it-now-btn" data-product-code="{{ $finalProduct['code'] }}">Buy it
-                        Now</button>
+                    <button class="btn btn-dark mb-2 buy-it-now-btn" data-product-code="{{ $finalProduct['code'] }}">Buy
+                        now</button>
                 </div>
                 <label class="form-label mt-1 fw-bold">Description Product</label>
                 <p>{{ $finalProduct['desc'] }}</p>
@@ -172,6 +172,7 @@
                             .then(function(response) {
                                 if (response.data.success) {
                                     alert("Product added to cart successfully.");
+                                    window.location.reload();
                                 } else {
                                     alert(response.data.message);
                                 }

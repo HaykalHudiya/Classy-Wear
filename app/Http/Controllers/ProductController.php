@@ -135,6 +135,7 @@ class ProductController extends Controller
                     'size' => $size,
                     'color' => $color,
                     'product' => $product,
+                    'quantity' => 1,
                 ];
                 $request->session()->put('cart', $cart);
 

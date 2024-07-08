@@ -9,6 +9,9 @@
     <title>Document</title>
     <link rel="stylesheet" href="{{ asset('B5/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('B5/Icon/font/bootstrap-icons.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montaga&display=swap" rel="stylesheet">
     <style>
         .custom-navbar {
             border-top: 4px solid #B67685;
@@ -16,6 +19,12 @@
             border-bottom: 4px solid #B67685;
             /* Ganti warna dan properti border-bottom sesuai kebutuhan */
             padding: 0;
+        }
+
+        .montaga-regular {
+            font-family: "Montaga", serif;
+            font-weight: 400;
+            font-style: normal;
         }
 
         .nav-link {
@@ -169,7 +178,7 @@
     </style>
 </head>
 
-<body>
+<body class="montaga-regular">
     <div class="container-fluid px-0">
         @include('frames.header')
         <div class="d-flex flex-column" style="background-color: #F5EEE6">

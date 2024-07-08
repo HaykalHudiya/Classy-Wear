@@ -33,7 +33,8 @@
                             <td id="productQuantity-{{ $index }}">{{ $item['quantity'] }}</td>
                             <td id="totalPrice-{{ $index }}">Rp
                                 {{ number_format($item['product']->price * $item['quantity'], 0, ',', '.') }},00</td>
-                            <td><button class="btn btn-danger"
+                            <td>
+                                <button class="btn btn-danger"
                                     onclick="removeFromCart('{{ $item['product']->code }}', '{{ $item['size'] }}', '{{ $item['color'] }}')">Remove</button>
                             </td>
                         </tr>
@@ -68,8 +69,63 @@
                 <label for="payment" class="form-label">Payment Method</label>
                 <input type="text" class="form-control" id="payment" placeholder="Enter payment method">
             </div>
-            <button type="submit" class="btn btn-primary">Order</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal"
+                onclick="fillModalForm()">Order</button>
         </form>
+
+        <!-- The Modal -->
+        <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderModalLabel">Detail Orders</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Please Check your Orders!!</p>
+                        @php
+                            $totalPrice = 0;
+                        @endphp
+                        @foreach ($cart as $index => $item)
+                            <div>
+                                <p>{{ $item['product']->name }} - {{ $item['quantity'] }} - Rp
+                                    {{ number_format($item['product']->price * $item['quantity'], 0, ',', '.') }},00</p>
+                            </div>
+                            @php
+                                $totalPrice += $item['product']->price * $item['quantity'];
+                            @endphp
+                        @endforeach
+                        <p>Total: Rp {{ number_format($totalPrice, 0, ',', '.') }},00</p>
+                        <form>
+                            <div class="mb-3">
+                                <label for="modalName" class="form-label">Name:</label>
+                                <input type="text" class="form-control" id="modalName" value="XXXXXXXXXX" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modalPhone" class="form-label">Phone Number:</label>
+                                <input type="text" class="form-control" id="modalPhone" value="XXXXXXXXXX" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modalAddress" class="form-label">Address:</label>
+                                <input type="text" class="form-control" id="modalAddress" value="XXXXXXXXXX" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modalEmail" class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="modalEmail" value="XXXXXXXXXX" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modalPayment" class="form-label">Payment Method:</label>
+                                <input type="text" class="form-control" id="modalPayment" value="XXXXXXXXXX" disabled>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="submitModalForm()">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <h2 class="mt-5">Recommended Products</h2>
         <div class="recommended-products row">
@@ -119,39 +175,61 @@
                 </div>
             </div>
         </div>
-        <script>
-            function calculateTotal(index) {
-                const priceElement = document.getElementById(`productPrice-${index}`);
-                const quantityElement = document.getElementById(`productQuantity-${index}`);
-                const totalPriceElement = document.getElementById(`totalPrice-${index}`);
-
-                const price = parseFloat(priceElement.textContent.replace('Rp ', '').replace(/\./g, '').replace(',', '.'));
-                const quantity = parseInt(quantityElement.value);
-
-                const totalPrice = price * quantity;
-                totalPriceElement.textContent =
-                    `Rp ${totalPrice.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-            }
-        </script>
-        <script>
-            function removeFromCart(code, size, color) {
-                axios.post('/carts/remove', {
-                        code: code,
-                        size: size,
-                        color: color
-                    })
-                    .then(function(response) {
-                        if (response.data.success) {
-                            window.location.reload();
-                        } else {
-                            alert("Failed to remove item from cart: " + response.data.message);
-                        }
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                        alert("An error occurred. Please try again.");
-                    });
-            }
-        </script>
     </div>
+
+    <script>
+        function fillModalForm() {
+            // Get values from the main form
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const email = document.getElementById('email').value;
+            const payment = document.getElementById('payment').value;
+
+            // Set values to the modal form
+            document.getElementById('modalName').value = name;
+            document.getElementById('modalPhone').value = phone;
+            document.getElementById('modalAddress').value = address;
+            document.getElementById('modalEmail').value = email;
+            document.getElementById('modalPayment').value = payment;
+        }
+
+        function submitModalForm() {
+            // Optionally submit the modal form or handle the confirm action
+            // Example:
+            // document.getElementById('modalForm').submit();
+        }
+
+        function calculateTotal(index) {
+            const priceElement = document.getElementById(`productPrice-${index}`);
+            const quantityElement = document.getElementById(`productQuantity-${index}`);
+            const totalPriceElement = document.getElementById(`totalPrice-${index}`);
+
+            const price = parseFloat(priceElement.textContent.replace('Rp ', '').replace(/\./g, '').replace(',', '.'));
+            const quantity = parseInt(quantityElement.textContent);
+
+            const totalPrice = price * quantity;
+            totalPriceElement.textContent =
+                `Rp ${totalPrice.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })},00`;
+        }
+
+        function removeFromCart(code, size, color) {
+            axios.post('/carts/remove', {
+                    code: code,
+                    size: size,
+                    color: color
+                })
+                .then(function(response) {
+                    if (response.data.success) {
+                        window.location.reload();
+                    } else {
+                        alert("Failed to remove item from cart: " + response.data.message);
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                    alert("An error occurred. Please try again.");
+                });
+        }
+    </script>
 @endsection
