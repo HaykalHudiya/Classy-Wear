@@ -9,19 +9,16 @@ class invoice extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'inv_code',
-        'code',
-        'name',
-        'price',
-        'size',
-        'color',
-        'customer_id',
-    ];
+    protected $guarded = [];
 
     // Relasi banyak ke satu dengan Customer
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(InvoiceItem::class);
     }
 }

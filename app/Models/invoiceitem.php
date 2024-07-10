@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class customer extends Model
+class invoiceitem extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    // Relasi satu ke banyak dengan Invoice
-    public function invoices()
+    public function invoice()
     {
-        return $this->hasMany(Invoice::class);
+        return $this->belongsTo(Invoice::class);
     }
 }

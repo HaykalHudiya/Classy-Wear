@@ -48,26 +48,31 @@
         </table>
 
         <h2>Checkout</h2>
-        <form>
+        <form id="checkoutForm" action="/carts" method="POST">
+            @csrf
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                <input type="text" class="form-control" id="name" placeholder="Enter your name" name="name">
             </div>
             <div class="mb-3">
                 <label for="phone" class="form-label">Phone Number</label>
-                <input type="text" class="form-control" id="phone" placeholder="Enter your phone number">
+                <input type="text" class="form-control" id="phone" placeholder="Enter your phone number"
+                    name="phone">
             </div>
             <div class="mb-3">
                 <label for="address" class="form-label">Address</label>
-                <input type="text" class="form-control" id="address" placeholder="Enter your address">
+                <input type="text" class="form-control" id="address" placeholder="Enter your address" name="address">
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                <input type="email" class="form-control" id="email" placeholder="Enter your email" name="email">
             </div>
             <div class="mb-3">
                 <label for="payment" class="form-label">Payment Method</label>
-                <input type="text" class="form-control" id="payment" placeholder="Enter payment method">
+                <select class="form-select" aria-label="Default select example" id=payment name="payment">
+                    <option selected disabled>Select Payment Method</option>
+                    <option value="Qris">Qris</option>
+                </select>
             </div>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal"
                 onclick="fillModalForm()">Order</button>
@@ -115,7 +120,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="modalPayment" class="form-label">Payment Method:</label>
-                                <input type="text" class="form-control" id="modalPayment" value="XXXXXXXXXX" disabled>
+                                <input type="text" class="form-control" id="modalPayment" value="XXXXXXXXXX"
+                                    disabled>
                             </div>
                         </form>
                     </div>
@@ -195,9 +201,8 @@
         }
 
         function submitModalForm() {
-            // Optionally submit the modal form or handle the confirm action
-            // Example:
-            // document.getElementById('modalForm').submit();
+            // Submit the main form when modal button is clicked
+            document.getElementById('checkoutForm').submit();
         }
 
         function calculateTotal(index) {

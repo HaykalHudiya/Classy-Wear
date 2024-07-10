@@ -148,11 +148,11 @@ class ProductController extends Controller
         }
     }
 
-    public function carts(Request $request)
-    {
-        $cart = $request->session()->get('cart', []);
-        return view('components.cart', ['cart' => $cart]);
-    }
+    // public function carts(Request $request)
+    // {
+    //     $cart = $request->session()->get('cart', []);
+    //     return view('components.cart', ['cart' => $cart]);
+    // }
 
     public function checkProductAvailability(Request $request)
     {

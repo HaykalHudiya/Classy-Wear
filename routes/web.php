@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProductController;
 use App\Models\product;
@@ -43,7 +44,13 @@ Route::get('/shirt/{code}', [ProductController::class, 'detail'])->name('frame.d
 
 // Route::match(['get', 'post'], '/cart', [ProductController::class, 'cart'])->name('cart');
 
-Route::get('/carts', [ProductController::class, 'carts'])->name('carts');
+Route::match(['get', 'post'], '/carts', [InvoiceController::class, 'checkout'])->name('carts');
+Route::post('/rollback-transaction', [InvoiceController::class, 'rollbackTransaction'])->name('rollbackTransaction');
+// Route::get('/carts/checkout', [InvoiceController::class, 'rollbackTransaction'])->name('rollbackTransaction');
+Route::post('/checkout-callback', [InvoiceController::class, 'callback']);
+// Route::post('/carts', [InvoiceController::class, 'checkout']);
+// Route::post('/carts/pay', [InvoiceController::class, 'checkout'])->name('carts.pay');
+// Route::post('/cart/add', [ProductController::class, 'addToCart']);
 Route::post('/cart/add', [ProductController::class, 'addToCart']);
 Route::post('/carts/remove', [ProductController::class, 'removeFromCart']);
 Route::get('/check-product', [ProductController::class, 'checkProductAvailability'])->name('check-product');

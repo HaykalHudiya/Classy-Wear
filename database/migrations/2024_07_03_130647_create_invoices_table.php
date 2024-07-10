@@ -13,16 +13,12 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->string('inv_code');
-            $table->string('code')->unique();
-            $table->string('name');
-            $table->integer('price'); // Menggunakan integer untuk harga
-            $table->char('size'); // Enum untuk ukuran baju
-            $table->string('color'); // Kode warna biasanya berupa string
-            $table->unsignedBigInteger('customer_id'); // Menggunakan unsignedBigInteger untuk foreign key
+            $table->string('inv_code')->unique(); // Unique invoice code
+            $table->enum('status', ['Unpaid', 'Paid']);
+            $table->unsignedBigInteger('customer_id'); // Foreign key to customers table
             $table->timestamps();
 
-            // Menambahkan foreign key constraint
+            // Adding foreign key constraint
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
