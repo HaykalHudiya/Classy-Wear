@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class InvoiceController extends Controller
 {
@@ -90,7 +91,7 @@ class InvoiceController extends Controller
 
                 $params = [
                     'transaction_details' => [
-                        'order_id' => $invoice->id,
+                        'order_id' => $invoiceCode,
                         'gross_amount' => collect($cart)->sum(function ($item) {
                             return $item['product']->price * $item['quantity'];
                         }),
@@ -105,7 +106,7 @@ class InvoiceController extends Controller
                             'id' => $item['product']->code,
                             'price' => $item['product']->price,
                             'quantity' => $item['quantity'],
-                            'name' => $item['product']->name,
+                            'name' => $item['product']->name . " " . "Size " . $item['size'],
                         ];
                     })->toArray(),
                 ];
@@ -158,7 +159,7 @@ class InvoiceController extends Controller
                 Log::info('Status transaksi adalah capture', ['order_id' => $order_id]);
 
                 // Temukan invoice yang sesuai
-                $invoice = Invoice::where('id', $order_id)->first();
+                $invoice = Invoice::where('inv_code', $order_id)->first();
 
                 if ($invoice) {
                     // Update status invoice menjadi Paid
@@ -177,6 +178,12 @@ class InvoiceController extends Controller
         }
     }
 
+    public function clearSession(Request $request)
+    {
+        // Hapus semua data session terkait cart
+        Session::forget('cart');
+        return response()->json(['status' => 'Session cleared successfully']);
+    }
 
     public function rollbackTransaction(Request $request)
     {

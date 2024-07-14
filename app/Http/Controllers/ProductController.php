@@ -9,21 +9,35 @@ use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index($category, Request $request)
     {
         $cart = session()->get('cart', []);
         $cartCount = count($cart);
-        $products = Product::where('type', 'shirt')->get();
-
-        // Kelompokkan produk berdasarkan 6 karakter pertama dari 'code'
+        $sizeOrder = ['XS', 'S', 'M', 'L', 'XL'];
+        $products = [];
+        switch ($category) {
+            case 'newarrival':
+                $products = Product::where('type', 'newarrival')->get();
+                break;
+            case 'shirt':
+                $products = Product::where('type', 'shirt')->get();
+                break;
+            case 'outerwear':
+                $products = Product::where('type', 'outerwear')->get();
+                break;
+            case 'tshirt':
+                $products = Product::where('type', 'tshirt')->get();
+                break;
+            case 'pants':
+                $products = Product::where('type', 'pants')->get();
+                break;
+        }
+        // Group products by the first 6 characters of 'code'
         $groupedProducts = $products->groupBy(function ($product) {
             return substr($product->code, 0, 6);
         });
 
-        // Urutan yang diinginkan untuk ukuran
-        $sizeOrder = ['XS', 'S', 'M', 'L', 'XL'];
-
-        // Gabungkan 'color' dan 'size' untuk produk dengan 'code' yang sama
+        // Combine 'color' and 'size' for products with the same 'code'
         $finalProducts = $groupedProducts->map(function ($group) use ($sizeOrder) {
             $colors = [];
             $sizes = [];
@@ -33,14 +47,14 @@ class ProductController extends Controller
                 $sizes[] = $product->size;
             }
 
-            // Menghapus duplikat dan mengurutkan ukuran
+            // Remove duplicates and sort sizes
             $sizes = array_unique($sizes);
             usort($sizes, function ($a, $b) use ($sizeOrder) {
                 return array_search($a, $sizeOrder) - array_search($b, $sizeOrder);
             });
 
             return [
-                'id' => $group[0]->id,  // Assuming the 'id' field exists in the Product model
+                'id' => $group[0]->id,
                 'code' => substr($group[0]->code, 0, 6),
                 'name' => $group[0]->name,
                 'price' => $group[0]->price,
@@ -53,17 +67,33 @@ class ProductController extends Controller
             ];
         });
 
-        return view('components.shirt', [
+        if ($request->ajax()) {
+            if ($request->search) {
+                $searchTerm = $request->search;
+                $finalProducts = $finalProducts->filter(function ($product) use ($searchTerm) {
+                    return stripos($product['name'], $searchTerm) !== false;
+                });
+            }
+            return view("components.shirts", [
+                'products' => $finalProducts,
+                'sizeOrder' => $sizeOrder,
+                'cart' => $cartCount
+            ])->render();
+        }
+
+        return view("components.{$category}", [
             'products' => $finalProducts,
             'sizeOrder' => $sizeOrder,
-            'cart' => $cartCount
+            'cart' => $cartCount,
+            'category' => $category
         ]);
-        // $products = Product::all();
-        // return view('components.shirt', compact('products'));
     }
 
-    public function detail($code)
+
+
+    public function detail($code, Request $request)
     {
+        $category = $request->query('category');
         // Ambil produk dengan kode yang dimulai dari enam karakter pertama dari $code
         $product = Product::where('code', 'like', substr($code, 0, 6) . '%')->firstOrFail();
 
@@ -108,7 +138,7 @@ class ProductController extends Controller
         ];
 
         $sizeOrder = ['XS', 'S', 'M', 'L', 'XL'];
-        return view('components.detail', compact('finalProduct', 'sizeOrder'));
+        return view('components.detail', compact('finalProduct', 'sizeOrder', 'category'));
     }
 
     public function cart(Request $request)

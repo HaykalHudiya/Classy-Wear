@@ -15,9 +15,7 @@
     <style>
         .custom-navbar {
             border-top: 4px solid #B67685;
-            /* Ganti warna dan properti border-top sesuai kebutuhan */
             border-bottom: 4px solid #B67685;
-            /* Ganti warna dan properti border-bottom sesuai kebutuhan */
             padding: 0;
         }
 
@@ -33,16 +31,12 @@
 
         .nav-link:hover {
             background-color: #B67685;
-            /* Warna latar belakang saat di-hover */
             color: white;
-            /* Warna teks saat di-hover */
         }
 
         .nav-link.active {
             background-color: #B67685;
-            /* Warna latar belakang untuk item aktif */
             color: white;
-            /* Warna teks untuk item aktif */
         }
 
         .search-container {
@@ -51,23 +45,21 @@
 
         .search-container input[type="search"] {
             padding-right: 2.5rem;
-            width: 15%;
-            /* Adjust based on the icon size */
+            width: 100%;
+            max-width: 300px;
         }
 
         .search-container .search-icon {
             position: absolute;
             top: 50%;
             right: 10px;
-            /* Adjust as needed */
             transform: translateY(-50%);
             cursor: pointer;
         }
 
         .product-card {
             border: none;
-            width: 400px;
-            height: 400px;
+            width: 100%;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -81,16 +73,6 @@
 
         .product-card:hover .product-img {
             transform: scale(1.1);
-        }
-
-        .product-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-        }
-
-        .product-price {
-            font-size: 1rem;
-            color: #666;
         }
 
         .search-icons {
@@ -125,7 +107,7 @@
         }
 
         .product-price {
-            color: #dc3545;
+            color: black;
             font-size: 1.25rem;
         }
 
@@ -168,12 +150,114 @@
 
         .cart-icon .badge {
             position: absolute;
-            top: 50px;
-            right: -5px;
+            top: -10px;
+            right: -10px;
             background-color: red;
             color: white;
             border-radius: 50%;
             padding: 5px 8px;
+        }
+
+        <style>.product-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product-card {
+            max-width: 100%;
+            margin: auto;
+        }
+
+        .product-img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product-title,
+        .product-price {
+            width: 100%;
+            text-align: center;
+        }
+
+        .modal-body img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product-wrapper.single-product {
+            width: 1000px;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .product-wrapper.double-product {
+            width: 1000px;
+            max-width: 1000px;
+            margin-left: 1%;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-nav .nav-item {
+                width: 100%;
+                text-align: center;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 10px;
+            }
+
+            .search-container input[type="search"] {
+                width: 100%;
+            }
+
+            .product-card {
+                width: 100%;
+                height: auto;
+            }
+
+            .table-responsive {
+                overflow-x: auto;
+            }
+
+            .card-text {
+                font-size: 0.9rem;
+            }
+
+            .card {
+                margin-bottom: 1rem;
+            }
+
+            .product-wrapper.single-product {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .product-wrapper.double-product {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            @media (max-width: 576px) {
+                .card-text {
+                    font-size: 0.8rem;
+                }
+
+                .product-card {
+                    width: 100%;
+                    height: auto;
+                }
+
+                .table-responsive {
+                    overflow-x: auto;
+                }
+
+                .card {
+                    margin-bottom: 1rem;
+                }
+            }
         }
     </style>
 </head>

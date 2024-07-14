@@ -3,49 +3,52 @@
 @section('content')
     <div class="container my-4">
         <h1>Cart Summary</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Image</th>
-                    <th>Price</th>
-                    <th>Size</th>
-                    <th>Color</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @if ($cart)
-                    @foreach ($cart as $index => $item)
-                        <tr>
-                            <td>{{ $item['product']->name }}</td>
-                            <td><img src="{{ asset('Assets/Shirt/' . $item['product']->image) }}"
-                                    alt="{{ $item['product']->name }}" width="50"></td>
-                            <td id="productPrice-{{ $index }}">Rp
-                                {{ number_format($item['product']->price, 0, ',', '.') }},00</td>
-                            <td>{{ $item['size'] }}</td>
-                            <td>
-                                <span
-                                    style="background-color: #{{ $item['color'] }}; width: 20px; height: 20px; display: inline-block; border-radius: 50%;"></span>
-                            </td>
-                            <td id="productQuantity-{{ $index }}">{{ $item['quantity'] }}</td>
-                            <td id="totalPrice-{{ $index }}">Rp
-                                {{ number_format($item['product']->price * $item['quantity'], 0, ',', '.') }},00</td>
-                            <td>
-                                <button class="btn btn-danger"
-                                    onclick="removeFromCart('{{ $item['product']->code }}', '{{ $item['size'] }}', '{{ $item['color'] }}')">Remove</button>
-                            </td>
-                        </tr>
-                    @endforeach
-                @else
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td colspan="8" class="text-center">No products in the cart.</td>
+                        <th>Product</th>
+                        <th>Image</th>
+                        <th>Price</th>
+                        <th>Size</th>
+                        <th>Color</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                        <th></th>
                     </tr>
-                @endif
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @if ($cart)
+                        @foreach ($cart as $index => $item)
+                            <tr>
+                                <td>{{ $item['product']->name }}</td>
+                                <td><img src="{{ asset('Assets/' . $item['product']->type . '/' . $item['product']->image) }}"
+                                        alt="{{ $item['product']->name }}" class="img-fluid" width="50"></td>
+                                <td id="productPrice-{{ $index }}">Rp
+                                    {{ number_format($item['product']->price, 0, ',', '.') }},00</td>
+                                <td>{{ $item['size'] }}</td>
+                                <td>
+                                    <span
+                                        style="background-color: #{{ $item['color'] }}; width: 20px; height: 20px; display: inline-block; border-radius: 50%;"></span>
+                                </td>
+                                <td id="productQuantity-{{ $index }}">{{ $item['quantity'] }}</td>
+                                <td id="totalPrice-{{ $index }}">Rp
+                                    {{ number_format($item['product']->price * $item['quantity'], 0, ',', '.') }},00</td>
+                                <td>
+                                    <button class="btn"
+                                        onclick="removeFromCart('{{ $item['product']->code }}', '{{ $item['size'] }}', '{{ $item['color'] }}')"
+                                        style="background-color: #B67685;color:white">Remove</button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="8" class="text-center">No products in the cart.</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
 
         <h2>Checkout</h2>
         <form id="checkoutForm" action="/carts" method="POST">
@@ -57,7 +60,7 @@
             <div class="mb-3">
                 <label for="phone" class="form-label">Phone Number</label>
                 <input type="text" class="form-control" id="phone" placeholder="Enter your phone number"
-                    name="phone">
+                    name="phone" max="13">
             </div>
             <div class="mb-3">
                 <label for="address" class="form-label">Address</label>
@@ -69,13 +72,14 @@
             </div>
             <div class="mb-3">
                 <label for="payment" class="form-label">Payment Method</label>
-                <select class="form-select" aria-label="Default select example" id=payment name="payment">
+                <select class="form-select" aria-label="Default select example" id="payment" name="payment">
                     <option selected disabled>Select Payment Method</option>
-                    <option value="Qris">Qris</option>
+                    <option value="Credit/Debit Card">Credit/Debit Card</option>
                 </select>
             </div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal"
-                onclick="fillModalForm()">Order</button>
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-primary" onclick="fillModalForm()">Order</button>
+            </div>
         </form>
 
         <!-- The Modal -->
@@ -134,48 +138,39 @@
         </div>
 
         <h2 class="mt-5">Recommended Products</h2>
-        <div class="recommended-products row">
-            <div class="col-md-2">
+        <div class="recommended-products row justify-content-center mt-4">
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <div class="card">
-                    <img src="path_to_image_3.jpg" class="card-img-top" alt="Stripe Cardigan">
+                    <img src="path_to_image_3.jpg" class="card-img-top img-fluid" alt="Stripe Cardigan">
                     <div class="card-body text-center">
                         <p class="card-text">Rp. 99.000<br>Stripe Cardigan</p>
                         <button class="btn btn-outline-primary btn-sm">Add to Cart</button>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <div class="card">
-                    <img src="path_to_image_4.jpg" class="card-img-top" alt="Knitted Sweater">
+                    <img src="path_to_image_4.jpg" class="card-img-top img-fluid" alt="Knitted Sweater">
                     <div class="card-body text-center">
                         <p class="card-text">Rp. 99.000<br>Knitted Sweater</p>
                         <button class="btn btn-outline-primary btn-sm">Add to Cart</button>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <div class="card">
-                    <img src="path_to_image_5.jpg" class="card-img-top" alt="Knitted Sweater">
+                    <img src="path_to_image_5.jpg" class="card-img-top img-fluid" alt="Knitted Sweater">
                     <div class="card-body text-center">
                         <p class="card-text">Rp. 199.000<br>Knitted Sweater</p>
                         <button class="btn btn-outline-primary btn-sm">Add to Cart</button>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
                 <div class="card">
-                    <img src="path_to_image_6.jpg" class="card-img-top" alt="Knitted Sweater">
+                    <img src="path_to_image_6.jpg" class="card-img-top img-fluid" alt="Knitted Sweater">
                     <div class="card-body text-center">
                         <p class="card-text">Rp. 189.000<br>Knitted Sweater</p>
-                        <button class="btn btn-outline-primary btn-sm">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card">
-                    <img src="path_to_image_7.jpg" class="card-img-top" alt="Shirt">
-                    <div class="card-body text-center">
-                        <p class="card-text">Rp. 499.000<br>Shirt</p>
                         <button class="btn btn-outline-primary btn-sm">Add to Cart</button>
                     </div>
                 </div>
@@ -192,12 +187,39 @@
             const email = document.getElementById('email').value;
             const payment = document.getElementById('payment').value;
 
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const isEmailValid = emailPattern.test(email);
+            const isPhoneValid = (phone.length === 12 || phone.length === 13) && /^\d+$/.test(phone);
+
+            if (!name || !phone || !address || !email || !payment) {
+                alert('Please enter all the data.');
+                return;
+            }
+
+            if (!isEmailValid && !isPhoneValid) {
+                alert('Please enter a valid email address & A phone number with 12 or 13 digits.');
+                return;
+            }
+
+            if (!isEmailValid) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            if (!isPhoneValid) {
+                alert('Phone number must be 12 or 13 digits.');
+                return;
+            }
+
             // Set values to the modal form
             document.getElementById('modalName').value = name;
             document.getElementById('modalPhone').value = phone;
             document.getElementById('modalAddress').value = address;
             document.getElementById('modalEmail').value = email;
             document.getElementById('modalPayment').value = payment;
+
+            var orderModal = new bootstrap.Modal(document.getElementById('orderModal'), {});
+            orderModal.show();
         }
 
         function submitModalForm() {

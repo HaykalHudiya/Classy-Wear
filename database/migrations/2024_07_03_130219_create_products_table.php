@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('size', ['XS', 'S', 'M', 'L', 'XL']); // Enum untuk ukuran baju
             $table->string('color'); // Kode warna biasanya berupa string
             $table->string('image'); // Nama file gambar
-            $table->enum('type', ['shirt', 'outwear', 't-shirt', 'pants']); // Enum untuk tipe produk
+            $table->enum('type', ['shirt', 'outerwear', 'tshirt', 'pants', 'newarrival']); // Enum untuk tipe produk
             $table->timestamps();
         });
     }

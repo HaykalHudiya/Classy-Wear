@@ -21,15 +21,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/new-arrival', [ItemController::class, 'newa'])->name('frame.newa');
-Route::get('/best-seller', [ItemController::class, 'best'])->name('frame.best');
-Route::get('/outwear', [ItemController::class, 'outwear'])->name('frame.outwear');
-Route::get('/t-shirt', [ItemController::class, 'tshirt'])->name('frame.tshirt');
-Route::get('/pants', [ItemController::class, 'pants'])->name('frame.pants');
+// Route::get('/new-arrival', [ItemController::class, 'newa'])->name('frame.newa');
+// Route::get('/best-seller', [ItemController::class, 'best'])->name('frame.best');
+// Route::get('/outwear', [ItemController::class, 'outwear'])->name('frame.outwear');
+// Route::get('/t-shirt', [ItemController::class, 'tshirt'])->name('frame.tshirt');
+// Route::get('/pants', [ItemController::class, 'pants'])->name('frame.pants');
 
-Route::get('/shirt', [ProductController::class, 'index'])->name('frame.shirt');
+Route::get('/search', [ProductController::class, 'indexs'])->name('search');
 Route::get('/shirt/shirt', [ProductController::class, 'cart'])->name('cart');
-Route::get('/shirt/{code}', [ProductController::class, 'detail'])->name('frame.detail');
 
 // Route::get('/api/colors', function (Request $request) {
 //     $code = $request->input('code');
@@ -45,6 +44,7 @@ Route::get('/shirt/{code}', [ProductController::class, 'detail'])->name('frame.d
 // Route::match(['get', 'post'], '/cart', [ProductController::class, 'cart'])->name('cart');
 
 Route::match(['get', 'post'], '/carts', [InvoiceController::class, 'checkout'])->name('carts');
+Route::post('/clear-session', [InvoiceController::class, 'clearSession'])->name('clearSession');
 Route::post('/rollback-transaction', [InvoiceController::class, 'rollbackTransaction'])->name('rollbackTransaction');
 // Route::get('/carts/checkout', [InvoiceController::class, 'rollbackTransaction'])->name('rollbackTransaction');
 Route::post('/checkout-callback', [InvoiceController::class, 'callback']);
@@ -54,3 +54,5 @@ Route::post('/checkout-callback', [InvoiceController::class, 'callback']);
 Route::post('/cart/add', [ProductController::class, 'addToCart']);
 Route::post('/carts/remove', [ProductController::class, 'removeFromCart']);
 Route::get('/check-product', [ProductController::class, 'checkProductAvailability'])->name('check-product');
+Route::get('/detail/{code}', [ProductController::class, 'detail'])->name('frame.detail');
+Route::get('/{category}', [ProductController::class, 'index'])->name('frame.{category}');

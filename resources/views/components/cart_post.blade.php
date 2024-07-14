@@ -66,9 +66,20 @@
             window.snap.embed('{{ $snapToken }}', {
                 embedId: 'snap-container',
                 onSuccess: function(result) {
-                    /* Implementasi jika pembayaran sukses */
                     alert("payment success!");
                     console.log(result);
+                    fetch('/clear-session', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    }).then(response => response.json()).then(data => {
+                        console.log('Session cleared:', data);
+                        window.location.href = '/carts';
+                    }).catch(error => {
+                        console.error('Error clearing session:', error);
+                    });
                 },
                 onPending: function(result) {
                     /* Implementasi jika pembayaran pending */
@@ -81,8 +92,8 @@
                     console.log(result);
                 },
                 onClose: function() {
-                    /* Implementasi jika pengguna menutup popup tanpa menyelesaikan pembayaran */
                     alert('You closed the popup without finishing the payment');
+                    window.location.href = '/shirt';
                 }
             });
         });

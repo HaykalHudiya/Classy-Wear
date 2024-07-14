@@ -13,7 +13,7 @@
             <div class="col-md-5">
                 <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        <img src="{{ asset('Assets/Shirt/' . $finalProduct['image']) }}" class="d-block w-100"
+                        <img src="{{ asset('Assets/' . $category . '/' . $finalProduct['image']) }}" class="d-block w-100"
                             alt="{{ $finalProduct['name'] }}">
                         <div class="carousel-item">
                             <img src="Assets/newa/Na-1.png" class="d-block w-100" alt="Product Image 2">

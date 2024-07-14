@@ -1,4 +1,3 @@
-{{-- https://github.com/HaykalHudiya/Classy-Wear.git --}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,9 +12,7 @@
     <style>
         .custom-navbar {
             border-top: 4px solid #B67685;
-            /* Ganti warna dan properti border-top sesuai kebutuhan */
             border-bottom: 4px solid #B67685;
-            /* Ganti warna dan properti border-bottom sesuai kebutuhan */
             padding: 0;
         }
 
@@ -25,16 +22,12 @@
 
         .nav-link:hover {
             background-color: #B67685;
-            /* Warna latar belakang saat di-hover */
             color: white;
-            /* Warna teks saat di-hover */
         }
 
         .nav-link.active {
             background-color: #B67685;
-            /* Warna latar belakang untuk item aktif */
             color: white;
-            /* Warna teks untuk item aktif */
         }
 
         .search-container {
@@ -43,17 +36,21 @@
 
         .search-container input[type="search"] {
             padding-right: 2.5rem;
-            width: 15%;
-            /* Adjust based on the icon size */
+            width: 100%;
+            max-width: 300px;
         }
 
         .search-container .search-icon {
             position: absolute;
             top: 50%;
             right: 10px;
-            /* Adjust as needed */
             transform: translateY(-50%);
             cursor: pointer;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
         }
 
         .carousel-indicators {
@@ -73,14 +70,23 @@
             height: 10px;
             border-radius: 50%;
             background-color: rgba(0, 0, 0, 0.5);
-            /* Adjust the color as needed */
             margin-right: 5px;
             cursor: pointer;
         }
 
         .carousel-indicators .active {
             background-color: #B67685;
-            /* Adjust the active color */
+        }
+
+        @media (max-width: 768px) {
+            .nav-item {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-link {
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -88,44 +94,42 @@
 <body>
     <div class="container-fluid px-0">
         <div class="d-flex flex-column text-center" style="background-color: #F3D7CA">
-            <img class="d-block mx-auto mb-4" src="Assets\Icon\logo-CW.png" alt="" width="500"
-                height="500">
+            <img class="d-block mx-auto mb-4" src="Assets\Icon\logo-CW.png" alt="" width="100"
+                height="100">
             <nav class="navbar custom-navbar" style="background-color: #FFF8E3 ">
                 <div class="container-fluid d-flex justify-content-center">
                     <ul class="nav flex-fill justify-content-center">
                         <li class="nav-item flex-fill text-center">
-                            <a class="nav-link p-4" href="http://127.0.0.1:8000/new-arrival">New
-                                Arrival</a>
+                            <a class="nav-link p-4" href="/newarrival">New Arrival</a>
                         </li>
                         <li class="nav-item flex-fill text-center">
-                            <a class="nav-link p-4" href="http://127.0.0.1:8000/best-seller">Best
-                                Seller</a>
+                            <a class="nav-link p-4" href="/best-seller">Best Seller</a>
                         </li>
                         <li class="nav-item flex-fill text-center">
-                            <a class="nav-link p-4" href="http://127.0.0.1:8000/shirt">Shirt</a>
+                            <a class="nav-link p-4" href="/shirt">Shirt</a>
                         </li>
                         <li class="nav-item flex-fill text-center">
-                            <a class="nav-link p-4" href="http://127.0.0.1:8000/outwear">Outerwear</a>
+                            <a class="nav-link p-4" href="/outerwear">Outerwear</a>
                         </li>
                         <li class="nav-item flex-fill text-center">
-                            <a class="nav-link p-4" href="http://127.0.0.1:8000/t-shirt">T-Shirt</a>
+                            <a class="nav-link p-4" href="tshirt">T-Shirt</a>
                         </li>
                         <li class="nav-item flex-fill text-center">
-                            <a class="nav-link p-4" href="http://127.0.0.1:8000/pants">Pants</a>
+                            <a class="nav-link p-4" href="/pants">Pants</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
         <div class="d-flex flex-column" style="background-color: #F5EEE6">
-            <div class="search-container d-flex flex-row-reverse">
-                <input class="form-control" type="search" placeholder="What can i help you to find ?"
+            <div class="search-container d-flex flex-row-reverse p-3">
+                <input class="form-control" type="search" placeholder="What can I help you to find?"
                     aria-label="Search">
                 <i class="bi bi-search search-icon"></i>
             </div>
             <div class="container-fluid" style="background-color: #F5EEE6">
                 <div class="d-flex align-items-stretch justify-content-center">
-                    <div id="carouselExampleIndicators" class="carousel slide">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                         <ol class="carousel-indicators">
                             <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
                             <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
@@ -157,21 +161,40 @@
             </div>
         </div>
     </div>
+    <footer class="py-3" style="background-color: #F3D7CA">
+        <ul class="nav justify-content-center pb-3">
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary mx-1"><i
+                        class="bi bi-facebook" style="font-size: 35px"></i></a>
+            </li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary mx-1"><i
+                        class="bi bi-instagram" style="font-size: 35px"></i></a>
+            </li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary mx-1"><i
+                        class="bi bi-tiktok" style="font-size: 35px"></i></a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary mx-1"><i
+                        class="bi bi-whatsapp" style="font-size: 35px"></i></a></li>
+        </ul>
+        <ul class="nav justify-content-center border-bottom border-white pb-3 mb-3">
+            <p style="font-size: 45px">Wear Confidence Wear Us</p>
+        </ul>
+        <img class="d-block mx-auto" src="{{ asset('Assets\Icon\logo-CW.png') }}" alt="" width="150"
+            height="150">
+        <p class="text-center text-body-secondary">© 2024 Classy Wear, Inc</p>
+    </footer>
+
     <!-- Bootstrap Bundle with Popper -->
     <script src="B5/js/bootstrap.bundle.min.js"></script>
     <script>
-        const myCarouselElement = document.querySelector('#carouselExampleIndicators')
-
+        const myCarouselElement = document.querySelector('#carouselExampleIndicators');
         const carousel = new bootstrap.Carousel(myCarouselElement, {
-            interval: 1000,
-            pause: "hover"
-        })
+            interval: 3000,
+            pause: 'hover'
+        });
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const currentLocation = window.location.href;
             const menuItems = document.querySelectorAll('.nav-link');
-
             menuItems.forEach(item => {
                 if (item.href === currentLocation) {
                     item.classList.add('active');
